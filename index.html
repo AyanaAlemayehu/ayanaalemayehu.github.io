@@ -67,51 +67,95 @@
           
           <p>Fast forward to 2020, this case has been brought to the Supreme Court by Google to challenge this ruling among others. As evident by it reaching the Supreme Court, this is not simply just a case determining whether Google was operating within Fair Use. In fact, as Supreme Court cases often do, the final ruling of this case will establish a precedent within the software world. Should the ruling fall once and for all in Oracles favor, this could spell drastic changes in the ability of software developers to, well, develop software in a legal and inexpensive manner. This could lead to higher prices in premium or once free software as developers are required to attain licenses to use copyrighted code, instead of reverse engineering their own versions, and at worst could lead to a monopoly in the hands of the few who own the rights to the software.</p>
         </div>
-  
-    <!-- The stillhavenoideawhatimmadohere Section
-    <div class="w3-black" id="tour">
-      <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
-        <h2 class="w3-wide w3-center">TOUR DATES</h2>
-        <p class="w3-opacity w3-center"><i>Remember to book your tickets!</i></p><br>
-  
-        <ul class="w3-ul w3-border w3-white w3-text-grey">
-          <li class="w3-padding">September <span class="w3-tag w3-red w3-margin-left">Sold out</span></li>
-          <li class="w3-padding">October <span class="w3-tag w3-red w3-margin-left">Sold out</span></li>
-          <li class="w3-padding">November <span class="w3-badge w3-right w3-margin-right">3</span></li>
-        </ul>
-  
-        <div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
-          <div class="w3-third w3-margin-bottom">
-            <img src="/w3images/newyork.jpg" alt="New York" style="width:100%" class="w3-hover-opacity">
-            <div class="w3-container w3-white">
-              <p><b>New York</b></p>
-              <p class="w3-opacity">Fri 27 Nov 2016</p>
-              <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-              <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-            </div>
+
+        <div class="w3-container w3-content" style="max-width:800px;padding-top:8px;padding-bottom:8px;" id="band">
+          <h2 class="w3-wide">Git Pathspec</h2>
+          <p class="w3-opacity"><i>And a Strange Lack of Information?</i></p>
+          <p class="w3-justify"> <p>Sourced from <a href="https://git-scm.com/docs/gitglossary">git glossary</a>, a pathspec is used to "limit the scope of operations to some subset of the tree or worktree."</p>
+            <p><center><i>What does that mean exactly?</i></center></p>
+            <p>Well, let's look at the command git add . We are all familiar with the git 
+              command, the starting point for all other git commands. Add is used to update the list
+              of files you wish to stage before committing. The . part is where the pathspec kicks in. This tells git to add all of the items within the current working directory, hence limiting the
+              scope of the git add command.
+              </p>
+            <p>Now, this may just seem like a small trick to skip some minor inconveniences while using git.
+              However, I assure you it is much more powerful than it seems. Though hard to compare to
+              anything else if you haven't used it before, I like to think of it as a beefed up version
+              of RegEx (regular expressions) useful for traversing folders and files in a git repository.
+              </p>
+            <p>Let's build a git command using a complicated pathspec together to better understand this wondrous functionality. Say I have a git repository...
+            </p>
+            <code>
+              rootFolder
+              <hr class="hr-short">
+              &emsp;-images
+              <hr class="hr-short">
+              &emsp;&emsp;--hello.png
+                <hr class="hr-short">
+                &emsp;&emsp;--goodbye.jpg
+                <hr class="hr-short">
+                &emsp;&emsp;--dontforgetme.png
+                <hr class="hr-short">
+                &emsp;-js
+              <hr class="hr-short">
+              &emsp;&emsp;--temp1.js
+                <hr class="hr-short">
+                &emsp;&emsp;--fun2.js
+                <hr class="hr-short">
+                &emsp;&emsp;--dontpick.js
+                <hr class="hr-short">
+                &emsp;-hidingFolder
+              <hr class="hr-short">
+              &emsp;&emsp;--deeperHidingFolder
+            </code>
+            <center><i>(bear with the silly names for now, they will make sense soon)</i></center>
+            <p>... and I want to stage all png and numbered javascript files for my next commit. And, just to make this a little harder, we will start within the deeperHidingFolder directory. </p>
+            <p>So, with our current working directory being rootFolder/hidingFolder/deeperHidingFolder, we start by simply writing the usual git command...</p>
+            <code>
+              git add
+            </code>
+            <p>Then, we build our complicated pathspec. Starting with the numerically named javascript files, we write...</p>
+            <code>
+              git add :/*[[:digit:]].js
+            </code>
+            <p>Don't worry if this doesn't make sense! We will go through each bit together.</p>
+            <p>:/ tells git to start from the root folder (one can also use :(top)). Using this allows all subdirectories, such as the js folder, to be included in the scope of our command.</p>
+            <p>* means that the string within this section (in this case the name of the file before the . something extension) can take any form. if the command was simply</p>
+            <code>
+              - git add *
+            </code>
+            <p>then anything from 1321312312.123123123 to heyhihello.jpgpng to whatever combination you can think of would work.</p>
+            <p>[[:digit:]] is a bracket expression (more info in the GNU manual). This particular expression sees [:digit:] contained within the outer brackets [] and correspondingly, tries to match any file that has a digit ranging from 0-9. Combined with the preceding *, the command matches any javascript file that starts with a random array of characters, and ends with a digit in the name.</p>
+            <p>Let's move on to adding only png's to our staging command. This is fairly simple, and comes out to...</p>
+            <code>git add :/*[[:digit:]].js :/*.PNG</code>
+            <p><center><i>looking at the :/*.png part of our command (notice we can string together pathspecs separated by spaces)</i></center></p>
+            <p>:/ Again, this starts our git command at the root folder. This time, its to allow our command to work in the /images subdirectory by starting in the root folder. </p>
+            <p>* Again, this allows the possibility of any string, in our case in the name of a file before the .PNG extension.</p>
+            <p>.PNG This just ensures that we only use our command on .PNG files (make sure to capitalize PNG!)</p>
+            <p>And that's that!</p>
+            <p>More resources...</p>
+            <p>A tiny amount of official documentation: https://git-scm.com/docs/gitglossary
+              <hr class="hr-short">
+              Nice blogs...
+              <hr class="hr-short">
+              https://css-tricks.com/git-pathspecs-and-how-to-use-them/
+              <hr class="hr-short">
+              https://kgrz.io/git-intro-to-pathspec.html
+              <hr class="hr-short">
+              https://medium.com/@lilylakshi/the-path-to-git-pathspec-47141b333c58
+              </p>
           </div>
-          <div class="w3-third w3-margin-bottom">
-            <img src="/w3images/paris.jpg" alt="Paris" style="width:100%" class="w3-hover-opacity">
-            <div class="w3-container w3-white">
-              <p><b>Paris</b></p>
-              <p class="w3-opacity">Sat 28 Nov 2016</p>
-              <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-              <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-            </div>
-          </div>
-          <div class="w3-third w3-margin-bottom">
-            <img src="/w3images/sanfran.jpg" alt="San Francisco" style="width:100%" class="w3-hover-opacity">
-            <div class="w3-container w3-white">
-              <p><b>San Francisco</b></p>
-              <p class="w3-opacity">Sun 29 Nov 2016</p>
-              <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-              <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
---> 
+        <!-- <div class="w3-container w3-content" style="max-width:800px;padding-top:8px;padding-bottom:8px;" id="band"> <- copy n paste for easy new articles
+          <h2 class="w3-wide"></h2>
+          <p class="w3-opacity"><i></i></p>
+          <p class="w3-justify"> <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+        </div> -->
+
   <!-- End Page Content -->
   </div>
 

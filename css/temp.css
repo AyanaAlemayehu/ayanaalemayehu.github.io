@@ -12,8 +12,12 @@ code {
     background-color: #f1f1f1;
     padding: 2px;
     font-size: 105%;
+    text-align:center;
   }
 .hr-short{
     border: 0;
     margin: 0 0 0 0;
+}
+b {
+    font-size: 120%;
 }

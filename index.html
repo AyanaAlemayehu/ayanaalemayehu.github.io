@@ -119,19 +119,19 @@
               git add :/*[[:digit:]].js
             </code>
             <p>Don't worry if this doesn't make sense! We will go through each bit together.</p>
-            <p>:/ tells git to start from the root folder (one can also use :(top)). Using this allows all subdirectories, such as the js folder, to be included in the scope of our command.</p>
-            <p>* means that the string within this section (in this case the name of the file before the . something extension) can take any form. if the command was simply</p>
+            <p><b>:/</b> tells git to start from the root folder (one can also use :(top)). Using this allows all subdirectories, such as the js folder, to be included in the scope of our command.</p>
+            <p><b>*</b> means that the string within this section (in this case the name of the file before the . something extension) can take any form. if the command was simply</p>
             <code>
               - git add *
             </code>
             <p>then anything from 1321312312.123123123 to heyhihello.jpgpng to whatever combination you can think of would work.</p>
-            <p>[[:digit:]] is a bracket expression (more info in the GNU manual). This particular expression sees [:digit:] contained within the outer brackets [] and correspondingly, tries to match any file that has a digit ranging from 0-9. Combined with the preceding *, the command matches any javascript file that starts with a random array of characters, and ends with a digit in the name.</p>
+            <p><b>[[:digit:]]</b> is a bracket expression (more info in the GNU manual). This particular expression sees [:digit:] contained within the outer brackets [] and correspondingly, tries to match any file that has a digit ranging from 0-9. Combined with the preceding *, the command matches any javascript file that starts with a random array of characters, and ends with a digit in the name.</p>
             <p>Let's move on to adding only png's to our staging command. This is fairly simple, and comes out to...</p>
             <code>git add :/*[[:digit:]].js :/*.PNG</code>
             <p><center><i>looking at the :/*.png part of our command (notice we can string together pathspecs separated by spaces)</i></center></p>
-            <p>:/ Again, this starts our git command at the root folder. This time, its to allow our command to work in the /images subdirectory by starting in the root folder. </p>
-            <p>* Again, this allows the possibility of any string, in our case in the name of a file before the .PNG extension.</p>
-            <p>.PNG This just ensures that we only use our command on .PNG files (make sure to capitalize PNG!)</p>
+            <p><b>:/</b> Again, this starts our git command at the root folder. This time, its to allow our command to work in the /images subdirectory by starting in the root folder. </p>
+            <p><b>*</b> Again, this allows the possibility of any string, in our case in the name of a file before the .PNG extension.</p>
+            <p><b>.PNG</b> This just ensures that we only use our command on .PNG files (make sure to capitalize PNG!)</p>
             <p>And that's that!</p>
             <p>More resources...</p>
             <p>A tiny amount of official documentation: https://git-scm.com/docs/gitglossary
